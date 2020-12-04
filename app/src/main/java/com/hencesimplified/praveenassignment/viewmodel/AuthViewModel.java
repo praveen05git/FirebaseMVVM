@@ -7,9 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hencesimplified.praveenassignment.model.FirebaseHelper;
 
@@ -19,7 +16,6 @@ public class AuthViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private FirebaseHelper firebaseHelper = new FirebaseHelper();
     private FirebaseAuth firebaseAuth = firebaseHelper.firebaseInstantiate();
-    //public boolean successData;
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
@@ -45,6 +41,5 @@ public class AuthViewModel extends AndroidViewModel {
             }
         });
     }
-
 
 }

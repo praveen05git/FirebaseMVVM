@@ -18,9 +18,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextView username;
     private TextView password;
     private Button login;
+    private Button registerButton;
+    private ProgressBar loadingView;
     private AuthViewModel authViewModel;
-    ProgressBar loadingView;
-    private boolean success;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.userName);
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
+        registerButton = findViewById(R.id.registerButton);
         loadingView = findViewById(R.id.loadingView);
         loadingView.setVisibility(View.GONE);
 
@@ -38,20 +39,22 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> authViewModel.loginWithEmail(username.getText().toString(), password.getText().toString()));
 
+        registerButton.setOnClickListener(v -> startActivity(new Intent(this, RegistrationActivity.class)));
+
         observeViewModel();
     }
 
     private void observeViewModel() {
 
         authViewModel.isLoading.observe(this, isLoading -> {
-            if (isLoading) {
+            if (isLoading != null) {
                 loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             }
         });
 
         authViewModel.isSuccess.observe(this, isSuccess -> {
             if (isSuccess) {
-                startActivity(new Intent(this, RegistrationActivity.class));
+                startActivity(new Intent(this, HomeActivity.class));
             }
         });
     }
