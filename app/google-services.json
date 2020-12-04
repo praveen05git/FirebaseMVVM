@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "883267219932",
+    "project_id": "praveenassignment",
+    "storage_bucket": "praveenassignment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883267219932:android:805009f0d6e634ed1b1f19",
+        "android_client_info": {
+          "package_name": "com.hencesimplified.praveenassignment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "883267219932-s9dpuefaas2in60310jvj75pjbfqdv1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqLZq8fdZvZiXXSQYNsCwNNXdRukcQVw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "883267219932-s9dpuefaas2in60310jvj75pjbfqdv1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
