@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +20,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextView password;
     private Button login;
     private Button registerButton;
+    private RadioGroup userType;
     private ProgressBar loadingView;
     private AuthViewModel authViewModel;
+    private int TYPE_FLAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +34,26 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
         registerButton = findViewById(R.id.registerButton);
+        userType = findViewById(R.id.userType);
         loadingView = findViewById(R.id.loadingView);
         loadingView.setVisibility(View.GONE);
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         authViewModel.refresh();
+
+        userType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.doctorType:
+                        TYPE_FLAG = 1;
+                        break;
+                    case R.id.patientType:
+                        TYPE_FLAG = 2;
+                        break;
+                }
+            }
+        });
 
         login.setOnClickListener(v -> authViewModel.loginWithEmail(username.getText().toString(), password.getText().toString()));
 
@@ -54,7 +72,9 @@ public class LoginActivity extends AppCompatActivity {
 
         authViewModel.isSuccess.observe(this, isSuccess -> {
             if (isSuccess) {
-                startActivity(new Intent(this, HomeActivity.class));
+                Intent homeIntent = new Intent(this, HomeActivity.class);
+                homeIntent.putExtra("TYPE_FLAG", TYPE_FLAG);
+                startActivity(homeIntent);
             }
         });
     }
