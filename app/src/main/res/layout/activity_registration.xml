@@ -10,11 +10,12 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/emailId"
-        app:layout_constraintStart_toStartOf="@+id/emailId"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -25,7 +26,7 @@
         android:hint="Email ID"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/newPassword"
-        app:layout_constraintStart_toStartOf="@+id/newPassword"
+        app:layout_constraintStart_toStartOf="@+id/name"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <EditText
@@ -36,18 +37,15 @@
         android:hint="New Password"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/confirmPassword"
-        app:layout_constraintStart_toStartOf="@+id/confirmPassword"
+        app:layout_constraintStart_toStartOf="@+id/emailId"
         app:layout_constraintTop_toBottomOf="@+id/emailId" />
 
     <RadioGroup
         android:id="@+id/userSelect"
-        android:layout_width="206dp"
-        android:layout_height="106dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="125dp"
-        app:layout_constraintBottom_toTopOf="@+id/signupButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/cause"
+        app:layout_constraintStart_toStartOf="@+id/confirmPassword"
         app:layout_constraintTop_toBottomOf="@+id/confirmPassword">
 
         <RadioButton
@@ -72,20 +70,18 @@
         android:hint="Confirm Password"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/userSelect"
-        app:layout_constraintStart_toStartOf="@+id/userSelect"
+        app:layout_constraintStart_toStartOf="@+id/newPassword"
         app:layout_constraintTop_toBottomOf="@+id/newPassword" />
 
     <Button
         android:id="@+id/signupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="125dp"
-        android:layout_marginEnd="193dp"
+        android:layout_marginStart="137dp"
+        android:layout_marginBottom="51dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userSelect" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/registerLoading"
@@ -96,5 +92,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/cause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="37dp"
+        app:layout_constraintBottom_toTopOf="@+id/signupButton"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/headId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Head" />
+
+        <RadioButton
+            android:id="@+id/feverId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fever" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
