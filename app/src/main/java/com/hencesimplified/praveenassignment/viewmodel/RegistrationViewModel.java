@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hencesimplified.praveenassignment.model.Doctor;
 import com.hencesimplified.praveenassignment.model.FirebaseHelper;
+import com.hencesimplified.praveenassignment.model.Patient;
 
 public class RegistrationViewModel extends AndroidViewModel {
 
@@ -19,7 +20,7 @@ public class RegistrationViewModel extends AndroidViewModel {
     private FirebaseAuth firebaseAuth = firebaseHelper.firebaseInstantiate();
     private DatabaseReference databaseReference;
     private Doctor doctor;
-    String doctorMap = " ";
+    private Patient patient;
 
     public RegistrationViewModel(@NonNull Application application) {
         super(application);
@@ -46,15 +47,36 @@ public class RegistrationViewModel extends AndroidViewModel {
         }
     }
 
-    public void registerPatient(String emailId, String password, String patientName, String doctorMap) {
+    public void registerPatient(String emailId, String password, String patientName, String doctorId, String cause) {
         firebaseAuth.createUserWithEmailAndPassword(emailId, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String patientId = firebaseAuth.getCurrentUser().getUid();
-                saveUser(emailId, patientId, patientName);
+                savePatient(emailId, patientId, patientName, doctorId, cause);
+                patientMap(emailId, patientId, patientName, doctorId,cause);
             } else {
                 Toast.makeText(getApplication(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void savePatient(String emailId, String patientId, String patientName, String doctorId, String cause) {
+        databaseReference = firebaseDatabase.getReference("patientDetails");
+        patient = new Patient(emailId,patientId,patientName,doctorId,cause);
+        try {
+            databaseReference.child(patientId).setValue(patient);
+        } catch (Exception e) {
+            Toast.makeText(getApplication(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void patientMap(String emailId, String patientId, String patientName, String doctorId, String cause) {
+        databaseReference = firebaseDatabase.getReference("doctorPatientMap");
+        patient = new Patient(emailId,patientId,patientName,doctorId, cause);
+        try {
+            databaseReference.child(doctorId).child(patientId).setValue(patient);
+        } catch (Exception e) {
+            Toast.makeText(getApplication(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
 }

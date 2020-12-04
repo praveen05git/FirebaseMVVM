@@ -19,11 +19,14 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView emailId;
     private TextView newPassword;
     private TextView confirmPassword;
+    private RadioGroup reason;
     private RadioGroup userSelect;
     private Button signUpButton;
     private ProgressBar registerLoading;
     private RegistrationViewModel registrationViewModel;
     private int USER_FLAG;
+    private String doctorId;
+    private String cause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,34 +39,44 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmPassword = findViewById(R.id.confirmPassword);
         userSelect = findViewById(R.id.userSelect);
         signUpButton = findViewById(R.id.signupButton);
+        reason = findViewById(R.id.cause);
+        reason.setVisibility(View.GONE);
         registerLoading = findViewById(R.id.registerLoading);
         registerLoading.setVisibility(View.GONE);
 
         registrationViewModel = new ViewModelProvider(this).get(RegistrationViewModel.class);
 
-        userSelect.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+        userSelect.setOnCheckedChangeListener((group, checkedId) -> {
 
-                switch (checkedId) {
-                    case R.id.doctorSelect:
-                        USER_FLAG = 1;
-                        break;
-                    case R.id.patientSelect:
-                        USER_FLAG = 2;
-                        break;
-                }
+            switch (checkedId) {
+                case R.id.doctorSelect:
+                    USER_FLAG = 1;
+                    break;
+                case R.id.patientSelect:
+                    USER_FLAG = 2;
+                    reason.setVisibility(View.VISIBLE);
+                    break;
             }
         });
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (USER_FLAG == 1) {
-                    registrationViewModel.registerUser(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString());
-                } else {
+        signUpButton.setOnClickListener(v -> {
+            if (USER_FLAG == 1) {
+                registrationViewModel.registerUser(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString());
+            } else {
 
-                }
+                reason.setOnCheckedChangeListener((group, checkedId) -> {
+                    switch (checkedId) {
+                        case R.id.headId:
+                            doctorId = "Kh2rZyJqvFYbeDB78Kqef4J0OxX2";
+                            cause = "Head ache";
+                            break;
+                        case R.id.feverId:
+                            doctorId = "ZqGfIuYazKeXDsDVkK6IO3OYYMu2";
+                            cause = "Fever";
+                            break;
+                    }
+                });
+                registrationViewModel.registerPatient(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString(), doctorId, cause);
             }
         });
 
