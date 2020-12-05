@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private RadioGroup userType;
     private ProgressBar loadingView;
     private AuthViewModel authViewModel;
-    private int TYPE_FLAG;
+    private String TYPE_FLAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.doctorType:
-                        TYPE_FLAG = 1;
+                        TYPE_FLAG = "Doctor";
                         break;
                     case R.id.patientType:
-                        TYPE_FLAG = 2;
+                        TYPE_FLAG = "Patient";
                         break;
                 }
             }
