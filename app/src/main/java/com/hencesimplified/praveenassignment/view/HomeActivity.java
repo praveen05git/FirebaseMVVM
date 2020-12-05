@@ -39,19 +39,20 @@ public class HomeActivity extends AppCompatActivity {
         patientListView = findViewById(R.id.patientListView);
 
         patientListViewModel = new ViewModelProvider(this).get(PatientListViewModel.class);
+        patientListViewModel.refresh();
 
         if (TYPE_FLAG.equals("Doctor")) {
             patientListViewModel.getAllPatients();
         } else {
             patientListViewModel.getPatient();
-            refreshLayout.setOnRefreshListener(() -> {
-                patientListViewModel.getPatient();
-                refreshLayout.setRefreshing(false);
-            });
         }
 
         patientListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         patientListView.setAdapter(patientListAdapter);
+
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+        });
 
         observeViewModel();
     }
@@ -61,6 +62,12 @@ public class HomeActivity extends AppCompatActivity {
         patientListViewModel.patientList.observe(this, patients -> {
             if (patients != null) {
                 patientListAdapter.updatePatientList(patients);
+            }
+        });
+
+        patientListViewModel.isLoadingList.observe(this, isLoadingList -> {
+            if (isLoadingList != null) {
+                progressBar.setVisibility(isLoadingList ? View.VISIBLE : View.GONE);
             }
         });
     }

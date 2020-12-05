@@ -22,6 +22,7 @@ import java.util.List;
 public class PatientListViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<Patient>> patientList = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLoadingList = new MutableLiveData<>();
     private List<Patient> newPatientList = new ArrayList<>();
     private Patient patients = new Patient();
     private FirebaseHelper firebaseHelper = new FirebaseHelper();
@@ -31,6 +32,10 @@ public class PatientListViewModel extends AndroidViewModel {
 
     public PatientListViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public void refresh() {
+        isLoadingList.setValue(true);
     }
 
     public void getPatient() {
@@ -43,6 +48,7 @@ public class PatientListViewModel extends AndroidViewModel {
                     patients = snapshot.getValue(Patient.class);
                     newPatientList.add(patients);
                     patientList.setValue(newPatientList);
+                    isLoadingList.setValue(false);
                 } catch (Exception e) {
                     Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -66,6 +72,7 @@ public class PatientListViewModel extends AndroidViewModel {
                         patients = ds.getValue(Patient.class);
                         newPatientList.add(patients);
                         patientList.setValue(newPatientList);
+                        isLoadingList.setValue(false);
                     }
                 } catch (Exception e) {
                     Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();

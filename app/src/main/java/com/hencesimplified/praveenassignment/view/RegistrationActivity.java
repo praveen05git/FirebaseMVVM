@@ -84,14 +84,14 @@ public class RegistrationActivity extends AppCompatActivity {
         observeViewModel();
     }
 
-    private void observeViewModel(){
+    private void observeViewModel() {
         registrationViewModel.isRegistering.observe(this, isRegistering -> {
             if (isRegistering != null) {
                 registerLoading.setVisibility(isRegistering ? View.VISIBLE : View.GONE);
             }
         });
 
-        registrationViewModel.isRegistered.observe(this, isRegistered-> {
+        registrationViewModel.isRegistered.observe(this, isRegistered -> {
             if (isRegistered) {
                 Intent homeIntent = new Intent(this, HomeActivity.class);
                 homeIntent.putExtra("TYPE_FLAG", USER_FLAG);
