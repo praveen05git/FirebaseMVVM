@@ -1,5 +1,6 @@
 package com.hencesimplified.praveenassignment.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +25,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button signUpButton;
     private ProgressBar registerLoading;
     private RegistrationViewModel registrationViewModel;
-    private int USER_FLAG;
-    private String doctorId;
-    private String cause;
+    private String USER_FLAG;
+    public String doctorId;
+    public String cause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,46 +40,63 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmPassword = findViewById(R.id.confirmPassword);
         userSelect = findViewById(R.id.userSelect);
         signUpButton = findViewById(R.id.signupButton);
-        reason = findViewById(R.id.cause);
+        reason = findViewById(R.id.reason);
         reason.setVisibility(View.GONE);
         registerLoading = findViewById(R.id.registerLoading);
         registerLoading.setVisibility(View.GONE);
 
         registrationViewModel = new ViewModelProvider(this).get(RegistrationViewModel.class);
+        registrationViewModel.refresh();
 
         userSelect.setOnCheckedChangeListener((group, checkedId) -> {
 
             switch (checkedId) {
                 case R.id.doctorSelect:
-                    USER_FLAG = 1;
+                    USER_FLAG = "Doctor";
                     break;
                 case R.id.patientSelect:
-                    USER_FLAG = 2;
+                    USER_FLAG = "Patient";
                     reason.setVisibility(View.VISIBLE);
                     break;
             }
         });
 
         signUpButton.setOnClickListener(v -> {
-            if (USER_FLAG == 1) {
-                registrationViewModel.registerUser(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString());
-            } else {
-
+            if (USER_FLAG.equals("Doctor")) {
+                registrationViewModel.registerDoctor(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString());
+            } else if (USER_FLAG.equals("Patient")) {
                 reason.setOnCheckedChangeListener((group, checkedId) -> {
+
                     switch (checkedId) {
                         case R.id.headId:
-                            doctorId = "Kh2rZyJqvFYbeDB78Kqef4J0OxX2";
+                            doctorId = "RzsUH4uhHnQ9JepzvOaLP6f9mLy2";
                             cause = "Head ache";
                             break;
                         case R.id.feverId:
-                            doctorId = "ZqGfIuYazKeXDsDVkK6IO3OYYMu2";
+                            doctorId = "qUn92donhEUGFQj9kik4WoXVaax1";
                             cause = "Fever";
                             break;
                     }
                 });
-                registrationViewModel.registerPatient(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString(), doctorId, cause);
+                registrationViewModel.registerPatient(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString(), "qUn92donhEUGFQj9kik4WoXVaax1", "Fever");
+            }
+        });
+        observeViewModel();
+    }
+
+    private void observeViewModel(){
+        registrationViewModel.isRegistering.observe(this, isRegistering -> {
+            if (isRegistering != null) {
+                registerLoading.setVisibility(isRegistering ? View.VISIBLE : View.GONE);
             }
         });
 
+        registrationViewModel.isRegistered.observe(this, isRegistered-> {
+            if (isRegistered) {
+                Intent homeIntent = new Intent(this, HomeActivity.class);
+                homeIntent.putExtra("TYPE_FLAG", USER_FLAG);
+                startActivity(homeIntent);
+            }
+        });
     }
 }
