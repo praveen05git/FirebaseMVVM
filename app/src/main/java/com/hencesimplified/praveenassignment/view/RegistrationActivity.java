@@ -93,7 +93,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registrationViewModel.isRegistered.observe(this, isRegistered -> {
             if (isRegistered) {
-                Intent homeIntent = new Intent(this, HomeActivity.class);
+                Intent homeIntent = new Intent(this, NotUsedHomeActivity.class);
                 homeIntent.putExtra("TYPE_FLAG", USER_FLAG);
                 startActivity(homeIntent);
             }

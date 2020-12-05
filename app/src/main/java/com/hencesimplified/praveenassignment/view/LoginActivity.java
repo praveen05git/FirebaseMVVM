@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         authViewModel.isSuccess.observe(this, isSuccess -> {
             if (isSuccess) {
-                Intent homeIntent = new Intent(this, HomeDrawer.class);
+                Intent homeIntent = new Intent(this, HomeActivity.class);
                 homeIntent.putExtra("TYPE_FLAG", TYPE_FLAG);
                 startActivity(homeIntent);
             }

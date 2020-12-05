@@ -1,74 +1,45 @@
 package com.hencesimplified.praveenassignment.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.navigation.NavigationView;
 import com.hencesimplified.praveenassignment.R;
-import com.hencesimplified.praveenassignment.viewmodel.PatientListViewModel;
-
-import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
-    SwipeRefreshLayout refreshLayout;
-    ProgressBar progressBar;
-    RecyclerView patientListView;
-    private PatientListAdapter patientListAdapter = new PatientListAdapter(new ArrayList<>());
-    private PatientListViewModel patientListViewModel;
-    private String TYPE_FLAG;
+    private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        TYPE_FLAG = intent.getStringExtra("TYPE_FLAG");
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
-        refreshLayout = findViewById(R.id.refreshLayout);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-        patientListView = findViewById(R.id.patientListView);
-
-        patientListViewModel = new ViewModelProvider(this).get(PatientListViewModel.class);
-        patientListViewModel.refresh();
-
-        if (TYPE_FLAG.equals("Doctor")) {
-            patientListViewModel.getAllPatients();
-        } else {
-            patientListViewModel.getPatient();
-        }
-
-        patientListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        patientListView.setAdapter(patientListAdapter);
-
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-        });
-
-        observeViewModel();
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_video, R.id.nav_audio)
+                .setDrawerLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-    private void observeViewModel() {
-
-        patientListViewModel.patientList.observe(this, patients -> {
-            if (patients != null) {
-                patientListAdapter.updatePatientList(patients);
-            }
-        });
-
-        patientListViewModel.isLoadingList.observe(this, isLoadingList -> {
-            if (isLoadingList != null) {
-                progressBar.setVisibility(isLoadingList ? View.VISIBLE : View.GONE);
-            }
-        });
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }
