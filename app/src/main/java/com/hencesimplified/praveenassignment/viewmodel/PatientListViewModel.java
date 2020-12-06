@@ -36,9 +36,11 @@ public class PatientListViewModel extends AndroidViewModel {
 
     public void refresh() {
         isLoadingList.setValue(true);
+
     }
 
     public void getPatient() {
+        newPatientList.clear();
         String userId = firebaseHelper.verifyUser().getUid();
         databaseReference = firebaseDatabase.getReference("patientDetails/" + userId + "/");
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -62,6 +64,7 @@ public class PatientListViewModel extends AndroidViewModel {
     }
 
     public void getAllPatients() {
+        newPatientList.clear();
         String userId = firebaseHelper.verifyUser().getUid();
         databaseReference = firebaseDatabase.getReference("doctorPatientMap/" + userId + "/");
         databaseReference.addValueEventListener(new ValueEventListener() {

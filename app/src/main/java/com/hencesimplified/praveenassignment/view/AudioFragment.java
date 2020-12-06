@@ -33,14 +33,18 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.hencesimplified.praveenassignment.R;
+import com.hencesimplified.praveenassignment.model.AudioVideoUrl;
+import com.hencesimplified.praveenassignment.viewmodel.AudioViewModel;
+
+import java.util.List;
 
 public class AudioFragment extends Fragment {
 
     PlayerView playerView;
     ProgressBar progressBar;
-    //ImageView btFullScreen;
     SimpleExoPlayer simpleExoPlayer;
-    boolean flag = false;
+    AudioViewModel audioViewModel;
+    List<AudioVideoUrl> urlList;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_audio, container, false);
@@ -54,7 +58,7 @@ public class AudioFragment extends Fragment {
         playerView = view.findViewById(R.id.audio_player);
         progressBar = view.findViewById(R.id.audio_progress_bar);
 
-        Uri videoUrl = Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        Uri audioUrl = Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
 
         LoadControl loadControl = new DefaultLoadControl();
 
@@ -70,7 +74,8 @@ public class AudioFragment extends Fragment {
 
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
-        MediaSource mediaSource = new ExtractorMediaSource(videoUrl, factory, extractorsFactory, null, null);
+
+        MediaSource mediaSource = new ExtractorMediaSource(audioUrl, factory, extractorsFactory, null, null);
 
         playerView.setPlayer(simpleExoPlayer);
 
@@ -155,5 +160,4 @@ public class AudioFragment extends Fragment {
 
         simpleExoPlayer.getPlaybackState();
     }
-
 }
