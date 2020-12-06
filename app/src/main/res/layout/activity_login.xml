@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.LoginActivity">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/userName"
@@ -59,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
-        android:id="@+id/userType"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/login"
@@ -67,13 +65,13 @@
         app:layout_constraintTop_toBottomOf="@+id/password">
 
         <RadioButton
-            android:id="@+id/doctorType"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Doctor" />
 
         <RadioButton
-            android:id="@+id/patientType"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Patient" />
