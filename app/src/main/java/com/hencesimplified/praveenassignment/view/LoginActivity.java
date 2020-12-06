@@ -28,14 +28,14 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private LinearLayout loginLayout;
     private TextView loginEmailId;
     private TextView loginPassword;
-    private Button loginButton;
     private TextView createAccount;
+    private Button loginButton;
     private RadioGroup userType;
     private ProgressBar loadingView;
     private CheckBox showHidePassword;
-    private LinearLayout loginLayout;
     private Animation shakeAnimation;
     private AuthViewModel authViewModel;
     private String TYPE_FLAG;

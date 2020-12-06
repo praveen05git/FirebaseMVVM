@@ -32,7 +32,7 @@ public class AudioViewModel extends AndroidViewModel {
     }
 
     public void getUrlList() {
-        databaseReference = firebaseDatabase.getReference("audioUrls");
+        databaseReference = firebaseDatabase.getReference("audioUrls/");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

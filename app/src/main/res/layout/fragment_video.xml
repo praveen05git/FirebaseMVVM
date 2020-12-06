@@ -30,6 +30,14 @@
             android:layout_height="80dp"
             android:layout_gravity="center" />
 
+        <Button
+            android:id="@+id/videoNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right |center_vertical"
+            android:text="Next" />
+
+
     </com.google.android.exoplayer2.ui.PlayerView>
 
 </RelativeLayout>

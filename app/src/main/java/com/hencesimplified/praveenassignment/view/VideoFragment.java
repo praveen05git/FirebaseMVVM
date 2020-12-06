@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -37,12 +38,18 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.hencesimplified.praveenassignment.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VideoFragment extends Fragment {
 
-    PlayerView playerView;
-    ProgressBar progressBar;
-    ImageView btFullScreen;
-    SimpleExoPlayer simpleExoPlayer;
+    private PlayerView playerView;
+    private ProgressBar progressBar;
+    private ImageView btFullScreen;
+    private SimpleExoPlayer simpleExoPlayer;
+    private Button videoNextButton;
+    private List<String> newList;
+    private int FLAG_VIDEO_NEXT;
     boolean flag = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,10 +66,29 @@ public class VideoFragment extends Fragment {
         playerView = view.findViewById(R.id.player_view);
         progressBar = view.findViewById(R.id.progress_bar);
         btFullScreen = view.findViewById(R.id.bt_fullscreen);
+        videoNextButton = view.findViewById(R.id.videoNextButton);
+        newList = new ArrayList<>();
+
+        newList.add("https://firebasestorage.googleapis.com/v0/b/praveenassignment.appspot.com/o/big_buck_bunny_720p_1mb.mp4?alt=media&token=b5bbdfd9-8134-4449-9b71-af7683031e51");
+        newList.add("https://firebasestorage.googleapis.com/v0/b/praveenassignment.appspot.com/o/sample.mp4?alt=media&token=85c12d49-a867-465c-85f3-cded4c2201a0");
+
+        videoManager(newList.get(FLAG_VIDEO_NEXT));
+
+        videoNextButton.setOnClickListener(v -> {
+            if (FLAG_VIDEO_NEXT + 1 < newList.size()) {
+                FLAG_VIDEO_NEXT += 1;
+                simpleExoPlayer.stop();
+                progressBar.setVisibility(View.VISIBLE);
+                videoManager(newList.get(FLAG_VIDEO_NEXT));
+            }
+        });
+    }
+
+    void videoManager(String url) {
 
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Uri videoUrl = Uri.parse("https://firebasestorage.googleapis.com/v0/b/arrwallpaper.appspot.com/o/big_buck_bunny_720p_1mb.mp4?alt=media&token=f9a1e623-36b5-4955-90e0-2371eecf9a63");
+        Uri videoUrl = Uri.parse(url);
 
         LoadControl loadControl = new DefaultLoadControl();
 

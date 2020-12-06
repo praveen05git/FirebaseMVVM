@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -32,19 +33,25 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hencesimplified.praveenassignment.R;
-import com.hencesimplified.praveenassignment.model.AudioVideoUrl;
-import com.hencesimplified.praveenassignment.viewmodel.AudioViewModel;
+import com.hencesimplified.praveenassignment.model.FirebaseHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AudioFragment extends Fragment {
 
-    PlayerView playerView;
-    ProgressBar progressBar;
-    SimpleExoPlayer simpleExoPlayer;
-    AudioViewModel audioViewModel;
-    List<AudioVideoUrl> urlList;
+    private PlayerView playerView;
+    private ProgressBar progressBar;
+    private SimpleExoPlayer simpleExoPlayer;
+    private Button nextButton;
+    private List<String> newList;
+    int FLAG_NEXT;
+    private FirebaseHelper firebaseHelper = new FirebaseHelper();
+    private FirebaseDatabase firebaseDatabase = firebaseHelper.databaseInstantiate();
+    private DatabaseReference databaseReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_audio, container, false);
@@ -57,8 +64,29 @@ public class AudioFragment extends Fragment {
 
         playerView = view.findViewById(R.id.audio_player);
         progressBar = view.findViewById(R.id.audio_progress_bar);
+        nextButton = view.findViewById(R.id.nextAudioButton);
+        newList = new ArrayList<>();
+        FLAG_NEXT = 0;
 
-        Uri audioUrl = Uri.parse("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        newList.add("https://firebasestorage.googleapis.com/v0/b/praveenassignment.appspot.com/o/SoundHelix-Song-1%20(1).mp3?alt=media&token=13f2942d-29ad-4fd1-98b5-3b03d411048e");
+        newList.add("https://firebasestorage.googleapis.com/v0/b/praveenassignment.appspot.com/o/file_example_MP3_1MG.mp3?alt=media&token=e6f38334-2ae1-428f-a75f-6e6cf9a491db");
+
+        audioManager(newList.get(FLAG_NEXT));
+
+        nextButton.setOnClickListener(v -> {
+            if (FLAG_NEXT + 1 < newList.size()) {
+                FLAG_NEXT += 1;
+                simpleExoPlayer.stop();
+                progressBar.setVisibility(View.VISIBLE);
+                audioManager(newList.get(FLAG_NEXT));
+
+            }
+        });
+    }
+
+    void audioManager(String newUrl) {
+
+        Uri audioUrl = Uri.parse(newUrl);
 
         LoadControl loadControl = new DefaultLoadControl();
 

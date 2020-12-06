@@ -28,6 +28,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView name;
     private TextView emailId;
     private TextView newPassword;
+    private TextView loginPage;
     private TextView confirmPassword;
     private RadioGroup reason;
     private RadioGroup userSelect;
@@ -52,6 +53,7 @@ public class RegistrationActivity extends AppCompatActivity {
         confirmPassword = findViewById(R.id.confirmPassword);
         userSelect = findViewById(R.id.userSelect);
         signUpButton = findViewById(R.id.signUpButton);
+        loginPage = findViewById(R.id.loginPage);
         reason = findViewById(R.id.reason);
         reason.setVisibility(View.GONE);
         registerLoading = findViewById(R.id.registerLoading);
@@ -130,6 +132,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     break;
             }
         });
+
+        loginPage.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
 
         observeViewModel();
     }

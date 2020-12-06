@@ -33,7 +33,6 @@ public class AuthViewModel extends AndroidViewModel {
             if (task.isSuccessful()) {
                 isLoading.setValue(false);
                 isSuccess.setValue(true);
-                Toast.makeText(getApplication(), "Logged in", Toast.LENGTH_LONG).show();
             } else {
                 isLoading.setValue(false);
                 isSuccess.setValue(false);
