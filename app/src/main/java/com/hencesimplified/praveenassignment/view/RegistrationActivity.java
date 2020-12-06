@@ -24,33 +24,33 @@ import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    private LinearLayout registrationLayout;
     private TextView name;
     private TextView emailId;
     private TextView newPassword;
     private TextView confirmPassword;
     private RadioGroup reason;
-    private LinearLayout registrationLayout;
-    private static Animation shakeAnimation;
     private RadioGroup userSelect;
     private Button signUpButton;
     private ProgressBar registerLoading;
+    private static Animation shakeAnimation;
     private RegistrationViewModel registrationViewModel;
     private String USER_FLAG;
-    public String doctorId;
-    public String cause;
+    private String getDoctorId;
+    private String getCause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_registration);
 
+        registrationLayout = findViewById(R.id.registrationLayout);
         name = findViewById(R.id.name);
         emailId = findViewById(R.id.userEmailId);
         newPassword = findViewById(R.id.newPassword);
         newPassword = findViewById(R.id.newPassword);
         confirmPassword = findViewById(R.id.confirmPassword);
         userSelect = findViewById(R.id.userSelect);
-        registrationLayout = findViewById(R.id.registrationLayout);
         signUpButton = findViewById(R.id.signUpButton);
         reason = findViewById(R.id.reason);
         reason.setVisibility(View.GONE);
@@ -66,12 +66,31 @@ public class RegistrationActivity extends AppCompatActivity {
             switch (checkedId) {
                 case R.id.doctorSelect:
                     USER_FLAG = "Doctor";
+                    reason.setVisibility(View.GONE);
                     break;
                 case R.id.patientSelect:
                     USER_FLAG = "Patient";
                     reason.setVisibility(View.VISIBLE);
                     break;
             }
+        });
+
+        reason.setOnCheckedChangeListener((group, checkedId) -> {
+
+            int id = checkedId;
+            System.out.print(id);
+
+            switch (checkedId) {
+                case R.id.headId:
+                    getDoctorId = "RzsUH4uhHnQ9JepzvOaLP6f9mLy2";
+                    getCause = "Head ache";
+                    break;
+                case R.id.feverId:
+                    getDoctorId = "qUn92donhEUGFQj9kik4WoXVaax1";
+                    getCause = "Fever";
+                    break;
+            }
+
         });
 
         signUpButton.setOnClickListener(v -> {
@@ -104,22 +123,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     break;
                 case 4:
                     if (USER_FLAG.equals("Doctor")) {
-                        registrationViewModel.registerDoctor(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString());
-                    } else if (USER_FLAG.equals("Patient")) {
-                        reason.setOnCheckedChangeListener((group, checkedId) -> {
-
-                            switch (checkedId) {
-                                case R.id.headId:
-                                    doctorId = "RzsUH4uhHnQ9JepzvOaLP6f9mLy2";
-                                    cause = "Head ache";
-                                    break;
-                                case R.id.feverId:
-                                    doctorId = "qUn92donhEUGFQj9kik4WoXVaax1";
-                                    cause = "Fever";
-                                    break;
-                            }
-                        });
-                        registrationViewModel.registerPatient(emailId.getText().toString(), confirmPassword.getText().toString(), name.getText().toString(), "qUn92donhEUGFQj9kik4WoXVaax1", "Fever");
+                        registrationViewModel.registerDoctor(getEmailId, getPassword, getName);
+                    } else {
+                        registrationViewModel.registerPatient(getEmailId, getConfirmPassword, getName, getDoctorId, getCause);
                     }
                     break;
             }
@@ -137,7 +143,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registrationViewModel.isRegistered.observe(this, isRegistered -> {
             if (isRegistered) {
-                Intent homeIntent = new Intent(this, NotUsedHomeActivity.class);
+                Intent homeIntent = new Intent(this, HomeActivity.class);
                 homeIntent.putExtra("TYPE_FLAG", USER_FLAG);
                 startActivity(homeIntent);
             }

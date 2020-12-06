@@ -40,10 +40,12 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         TextView patientName = holder.itemView.findViewById(R.id.patientName);
         TextView patientId = holder.itemView.findViewById(R.id.patientId);
         TextView patientCause = holder.itemView.findViewById(R.id.patientCause);
+        TextView patientEmail = holder.itemView.findViewById(R.id.patientEmail);
 
         patientName.setText(patientList.get(position).getPatientName());
         patientId.setText(patientList.get(position).getPatientId());
         patientCause.setText(patientList.get(position).getCause());
+        patientEmail.setText(patientList.get(position).getEmailId());
     }
 
     @Override
