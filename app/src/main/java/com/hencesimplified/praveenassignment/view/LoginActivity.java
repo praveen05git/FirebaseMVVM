@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -109,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         createAccount.setOnClickListener(v -> startActivity(new Intent(this, RegistrationActivity.class)));
+        overridePendingTransition(R.anim.right_enter, R.anim.left_out);
 
         observeViewModel();
     }
@@ -145,5 +147,23 @@ public class LoginActivity extends AppCompatActivity {
             flag = 3;
 
         return flag;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        alertDialog.setTitle("Warning!");
+        alertDialog.setMessage("Are you sure, you want to exit?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", (dialog, which) -> ExitActivity(null));
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", (dialog, which) -> dialog.cancel());
+        alertDialog.show();
+    }
+
+    public void ExitActivity(View view) {
+        Intent ExitIntent = new Intent(Intent.ACTION_MAIN);
+        ExitIntent.addCategory(Intent.CATEGORY_HOME);
+        ExitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(ExitIntent);
     }
 }
