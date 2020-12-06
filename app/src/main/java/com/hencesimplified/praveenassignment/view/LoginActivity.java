@@ -34,16 +34,16 @@ public class LoginActivity extends AppCompatActivity {
     private TextView createAccount;
     private RadioGroup userType;
     private ProgressBar loadingView;
-    private static CheckBox showHidePassword;
-    private static LinearLayout loginLayout;
-    private static Animation shakeAnimation;
+    private CheckBox showHidePassword;
+    private LinearLayout loginLayout;
+    private Animation shakeAnimation;
     private AuthViewModel authViewModel;
     private String TYPE_FLAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_test);
+        setContentView(R.layout.activity_login);
 
         loginEmailId = findViewById(R.id.loginEmailId);
         loginPassword = findViewById(R.id.loginPassword);
@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         authViewModel.refresh();
 
         showHidePassword.setOnCheckedChangeListener((button, isChecked) -> {
-
             if (isChecked) {
                 showHidePassword.setText("Hide Password");
                 loginPassword.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -89,27 +88,23 @@ public class LoginActivity extends AppCompatActivity {
             String getEmailId = loginEmailId.getText().toString().trim();
             String getPassword = loginPassword.getText().toString().trim();
 
-            String regEx = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b";
+            int getFlag = isValid(getEmailId, getPassword);
 
-            Pattern p = Pattern.compile(regEx);
-
-            Matcher m = p.matcher(getEmailId);
-
-            if (getEmailId.equals("") || getEmailId.length() == 0 || getPassword.equals("") || getPassword.length() == 0) {
-
-                loginLayout.startAnimation(shakeAnimation);
-                Snackbar.make(v, "Enter Email and Password ", Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(Color.parseColor("#96bb7c"))
-                        .setTextColor(Color.parseColor("#ffffff")).show();
-
-            } else if (!m.find()) {
-
-                Snackbar.make(v, "Enter valid Email", Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(Color.parseColor("#96bb7c"))
-                        .setTextColor(Color.parseColor("#ffffff")).show();
-
-            } else {
-                authViewModel.loginWithEmail(loginEmailId.getText().toString(), loginPassword.getText().toString());
+            switch (getFlag) {
+                case 1:
+                    loginLayout.startAnimation(shakeAnimation);
+                    Snackbar.make(v, "Enter Email and Password ", Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(Color.parseColor("#534BAE"))
+                            .setTextColor(Color.parseColor("#ffffff")).show();
+                    break;
+                case 2:
+                    loginLayout.startAnimation(shakeAnimation);
+                    Snackbar.make(v, "Enter valid Email", Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(Color.parseColor("#534BAE"))
+                            .setTextColor(Color.parseColor("#ffffff")).show();
+                    break;
+                case 3:
+                    authViewModel.loginWithEmail(loginEmailId.getText().toString(), loginPassword.getText().toString());
             }
         });
 
@@ -133,5 +128,22 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(homeIntent);
             }
         });
+    }
+
+    public int isValid(String getEmailId, String getPassword) {
+
+        int flag = 0;
+        String regEx = "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(getEmailId);
+
+        if (getEmailId.equals("") || getEmailId.length() == 0 || getPassword.equals("") || getPassword.length() == 0)
+            flag = 1;
+        else if (!m.find())
+            flag = 2;
+        else
+            flag = 3;
+
+        return flag;
     }
 }
