@@ -16,9 +16,9 @@ import java.util.List;
 
 public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.PatientViewHolder> {
 
-    private ArrayList<Patient> patientList;
+    private List<Patient> patientList;
 
-    public PatientListAdapter(ArrayList<Patient> patientList) {
+    public PatientListAdapter(List<Patient> patientList) {
         this.patientList = patientList;
     }
 
@@ -55,7 +55,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
     class PatientViewHolder extends RecyclerView.ViewHolder {
 
-        public View itemView;
+            public View itemView;
 
         public PatientViewHolder(@NonNull View itemView) {
             super(itemView);
